@@ -16,6 +16,7 @@ pipeline {
             jvmOptions 'jvmOptions'
             fsRoot 'fsRoot'
             launcherFactory $class: 'JNLP'
+            retentionTime 10
         }
     }
     stages {

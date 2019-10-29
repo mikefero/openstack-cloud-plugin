@@ -1,5 +1,6 @@
 package jenkins.plugins.openstack.pipeline;
 
+import org.apache.commons.lang.StringUtils;
 import hudson.Extension;
 import jenkins.plugins.openstack.compute.slaveopts.BootSource;
 import jenkins.plugins.openstack.compute.slaveopts.LauncherFactory;
@@ -32,6 +33,7 @@ public class DeclarativeOpenstackAgent extends DeclarativeAgent<DeclarativeOpens
     private final String jvmOptions;
     private final String fsRoot;
     private final LauncherFactory launcherFactory;
+    private final Integer retentionTime;
 
     /**
      * Constructor with required parameters for new OpenStack machine
@@ -50,9 +52,10 @@ public class DeclarativeOpenstackAgent extends DeclarativeAgent<DeclarativeOpens
      * @param jvmOptions Custom JVM Options
      * @param fsRoot Remote FS Root
      * @param launcherFactory Launcher Factory - JNLP or SSH
+     * @param retentionTime Retention time
      */
     @DataBoundConstructor
-    public DeclarativeOpenstackAgent(String cloud, BootSource bootSource, String hardwareId, String networkId, String userDataId, String floatingIpPool, String securityGroups, String availabilityZone, Integer startTimeout, String keyPairName, String jvmOptions, String fsRoot, LauncherFactory launcherFactory) {
+    public DeclarativeOpenstackAgent(String cloud, BootSource bootSource, String hardwareId, String networkId, String userDataId, String floatingIpPool, String securityGroups, String availabilityZone, Integer startTimeout, String keyPairName, String jvmOptions, String fsRoot, LauncherFactory launcherFactory, Integer retentionTime) {
         this.cloud = cloud;
         this.bootSource = bootSource;
         this.hardwareId = hardwareId;
@@ -66,6 +69,7 @@ public class DeclarativeOpenstackAgent extends DeclarativeAgent<DeclarativeOpens
         this.jvmOptions = jvmOptions;
         this.fsRoot = fsRoot;
         this.launcherFactory = launcherFactory;
+        this.retentionTime = retentionTime;
     }
 
     /**
@@ -89,6 +93,7 @@ public class DeclarativeOpenstackAgent extends DeclarativeAgent<DeclarativeOpens
         argMap.put("jvmOptions", jvmOptions);
         argMap.put("fsRoot", fsRoot);
         argMap.put("launcherFactory", launcherFactory);
+        argMap.put("retentionTime", retentionTime);
 
         return argMap;
     }

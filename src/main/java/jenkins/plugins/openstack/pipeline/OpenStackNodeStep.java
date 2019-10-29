@@ -40,9 +40,10 @@ public class OpenStackNodeStep extends Step implements Serializable{
     private final String jvmOptions;
     private final String fsRoot;
     private final LauncherFactory launcherFactory;
+    private final Integer retentionTime;
 
     @DataBoundConstructor
-    public OpenStackNodeStep(String cloud, BootSource bootSource, String hardwareId, String networkId, String userDataId, String floatingIpPool, String securityGroups, String availabilityZone, Integer startTimeout, String keyPairName, String jvmOptions, String fsRoot, LauncherFactory launcherFactory) {
+    public OpenStackNodeStep(String cloud, BootSource bootSource, String hardwareId, String networkId, String userDataId, String floatingIpPool, String securityGroups, String availabilityZone, Integer startTimeout, String keyPairName, String jvmOptions, String fsRoot, LauncherFactory launcherFactory, Integer retentionTime) {
         this.cloud = cloud;
         this.bootSource = bootSource;
         this.hardwareId = hardwareId;
@@ -56,6 +57,7 @@ public class OpenStackNodeStep extends Step implements Serializable{
         this.jvmOptions = jvmOptions;
         this.fsRoot = fsRoot;
         this.launcherFactory = launcherFactory;
+        this.retentionTime = retentionTime;
     }
 
     public String getCloud() {
@@ -67,24 +69,21 @@ public class OpenStackNodeStep extends Step implements Serializable{
     }
 
     public void createSlaveOptions() {
-        SlaveOptions opts = new SlaveOptions(
-                this.bootSource,
-                this.hardwareId,
-                this.networkId,
-                this.userDataId,
-                null,
-                null,
-                this.floatingIpPool,
-                this.securityGroups,
-                this.availabilityZone,
-                this.startTimeout,
-                this.keyPairName,
-                1,
-                this.jvmOptions,
-                this.fsRoot,
-                this.launcherFactory,
-                10
-        );
+        SlaveOptions opts = SlaveOptions.builder()
+          .numExecutors(1)
+          .bootSource(this.bootSource)
+          .hardwareId(this.hardwareId)
+          .networkId(this.networkId)
+          .userDataId(this.userDataId)
+          .floatingIpPool(this.floatingIpPool)
+          .securityGroups(this.securityGroups)
+          .availabilityZone(this.availabilityZone)
+          .startTimeout(this.startTimeout)
+          .keyPairName(this.keyPairName)
+          .jvmOptions(this.jvmOptions)
+          .fsRoot(this.fsRoot)
+          .launcherFactory(this.launcherFactory)
+          .retentionTime(this.retentionTime).build();
         this.slaveOptions = opts;
         System.out.println(toString());
     }
@@ -131,6 +130,7 @@ public class OpenStackNodeStep extends Step implements Serializable{
                 ", jvmOptions='" + jvmOptions + '\'' + '\n' +
                 ", fsRoot='" + fsRoot + '\'' + '\n' +
                 ", launcherFactory='" + launcherFactory + '\'' + '\n' +
+                ", retentionTime='" + retentionTime + '\'' + '\n' +
                 '}';
     }
 }
