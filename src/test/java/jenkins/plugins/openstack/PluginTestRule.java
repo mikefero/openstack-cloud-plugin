@@ -351,8 +351,8 @@ public final class PluginTestRule extends JenkinsRule {
     }
 
     public JCloudsCloud configureSlaveProvisioning(JCloudsCloud cloud, Collection<NetworkAddress> networks) {
-        if (cloud.getTemplates().size() == 0) throw new Error("Unable to provision - no templates provided");
-
+/* Removed for to bypass template creation when using Declarative Pipeline approach
+        if (cloud.getTemplates().size() == 0) throw new Error("Unable to provision - no templates provided");  */
         final List<Server> running = new ArrayList<>();
         Openstack os = cloud.getOpenstack();
         when(os.bootAndWaitActive(any(ServerCreateBuilder.class), any(Integer.class))).thenAnswer((Answer<Server>) invocation -> {
